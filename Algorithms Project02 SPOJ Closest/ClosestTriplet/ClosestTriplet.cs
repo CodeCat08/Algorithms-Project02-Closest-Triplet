@@ -35,7 +35,28 @@ namespace ClosestTriplet
 
         private static Point[] loadPoints()
         {
-            throw new NotImplementedException();
+            //read the number of points to be input
+            string nString = Console.ReadLine() ?? throw new ArgumentNullException("1st line of input can't be null");
+            bool isValidN = int.TryParse(nString, out int n);
+            if (!isValidN)
+            {
+                throw new FormatException($"Value \"{nString}\" could not be converted to an integer");
+            }
+
+            var points = new Point[n]; //initialize array of 'n' points
+
+            //assign each point in 'points' with an X and Y value
+            for (var i = 0; i < n; i++)
+            {
+                string pointString = Console.ReadLine() ?? throw new ArgumentNullException($"Point {i + 1} can't be null");
+                string[] values = pointString.Split(' ');
+                int.TryParse(values[0], out int tempX);
+                int.TryParse(values[1], out int tempY);
+                points[i].X = tempX;
+                points[i].Y = tempY;
+            }
+
+            return points; //return the points
         }
 
 
