@@ -33,6 +33,30 @@ namespace ClosestTriplet
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        ///     Gets the distance between two specified points.
+        /// </summary>
+        /// <param name="p1">The point 'p1'.</param>
+        /// <param name="p2">The point 'p2'.</param>
+        /// <returns>Euclidean distance between two specified points.</returns>
+        private static double dist(ref Point p1,ref Point p2)
+        {
+            int x = p1.X - p2.X;
+            int y = p1.Y - p2.Y;
+            double distance = Math.Pow(x, 2) + Math.Pow(y, 2);
+            return Math.Sqrt(distance);
+        }
+
+        /// <summary>
+        ///     Loads the points list into an array and returns the array of points.
+        /// </summary>
+        /// <returns>an array of points</returns>
+        /// <exception cref="ArgumentNullException">
+        ///     1st line of input can't be null
+        ///     or
+        ///     Point {i + 1} can't be null
+        /// </exception>
+        /// <exception cref="FormatException">Value \"{nString}\" could not be converted to an integer</exception>
         private static Point[] loadPoints()
         {
             //read the number of points to be input
@@ -58,8 +82,6 @@ namespace ClosestTriplet
 
             return points; //return the points
         }
-
-
     }
 
     /// <summary>
