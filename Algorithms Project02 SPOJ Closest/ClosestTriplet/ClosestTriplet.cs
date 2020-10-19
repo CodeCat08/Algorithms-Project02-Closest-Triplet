@@ -1,7 +1,7 @@
 ﻿// //----------------------------------------------------------------------------------------------------------------------
 // // File name: ClosestTriplet.cs
 // // Project name: ClosestTriplet
-// // Purpose: This program takes N points as input and returns the closest distance between 3 points of the N points.
+// // Purpose: This program takes N points as input and returns the closest distance between 3 points of the N points..
 // //----------------------------------------------------------------------------------------------------------------------
 // // Programmer name: David Nelson (nelsondk@etsu.edu)
 // // Course Name: CSCI 3230 Algorithms
@@ -60,9 +60,15 @@ namespace ClosestTriplet
         /// <returns>The shortest distance of 3 points of N points.</returns>
         private static double closestTripletProblem(ref Point[] points)
         {
-            if (points.Length < 9)
+            if (points.Length < 3)
             {
-                return closestTripletBrute(ref points);
+                return double.MaxValue;
+            }
+
+            if (points.Length == 3)
+            {
+                double threeDist = dist(points[0], points[1]) + dist(points[1], points[2]) + dist(points[0], points[2]);
+                return threeDist;
             }
 
             var d = double.MaxValue;
@@ -86,59 +92,45 @@ namespace ClosestTriplet
 
             //create an array called 'strip' which stores all points
             //which are at most 'd' distance away from middle line
-            var strip = new Point[points.Length];
-            var stripIndexer = 0;
+            var strip = new List<Point>();
             foreach (Point point in points)
             {
-                if (Math.Abs(point.X - midPoint.X) <= d / 2.0)
+                if (Math.Abs(point.X - midPoint.X) < d)
                 {
-                    strip[stripIndexer] = point;
-                    stripIndexer++;
+                    strip.Add(point);
                 }
             }
-
-            //sort the strip by Y-values
-            Array.Sort(strip, new PointCompareByY());
 
             //find smallest distance in 'strip'
-            int length = strip.Length;
-            for (var i = 0; i < length; i++)
-            {
-                for (int j = i + 1; j < length; j++)
-                {
-                    for (int k = j + 1; k < length; k++)
-                    {
-                        double stripBest = dist(ref strip[i], ref strip[j]) + dist(ref strip[j], ref strip[k]) + dist(ref strip[i], ref strip[k]);
-                        d = min(d, stripBest);
-                    }
-                }
-            }
+            double dStrip = findShortestInStrip(ref strip, d);
 
             //return closest distance
-            return d;
+            return min(d, dStrip);
         }
 
         /// <summary>
-        ///     Brute force algorithm for finding the closest triplet of 2D points of N points.
+        /// Finds the 3 closest points in the strip.
         /// </summary>
-        /// <param name="points">The N points.</param>
-        /// <returns>The shortest distance between 3 2D points.</returns>
-        private static double closestTripletBrute(ref Point[] points)
+        /// <param name="strip">The strip.</param>
+        /// <param name="minLeftRight">The minimum distance of the left and right point arrays.</param>
+        /// <returns>The shortest distance between 3 points of the points in the strap.</returns>
+        private static double findShortestInStrip(ref List<Point> strip, double minLeftRight)
         {
-            var smallest = double.MaxValue; //initialize the shortest distance to maximum double value
-            for (var i = 0; i < points.Length; i++)
+            strip.Sort(new PointCompareByY());
+
+            for (var i = 0; i < strip.Count; i++)
             {
-                for (int j = i + 1; j < points.Length; j++)
+                for (int j = i + 1; j < strip.Count; j++)
                 {
-                    for (int k = j + 1; k < points.Length; k++)
+                    for (int k = j + 1; k < strip.Count; k++)
                     {
-                        double currentDist = dist(ref points[i], ref points[j]) + dist(ref points[j], ref points[k]) + dist(ref points[i], ref points[k]);
-                        smallest = min(smallest, currentDist); //update best smallest value between 3 points
+                        double stripShortestDist = dist(strip[i], strip[j]) + dist(strip[j], strip[k]) + dist(strip[i], strip[k]);
+                        minLeftRight = min(minLeftRight, stripShortestDist);
                     }
                 }
             }
 
-            return smallest;
+            return minLeftRight;
         }
 
         /// <summary>
@@ -147,7 +139,7 @@ namespace ClosestTriplet
         /// <param name="p1">The point 'p1'.</param>
         /// <param name="p2">The point 'p2'.</param>
         /// <returns>Euclidean distance between three specified points.</returns>
-        private static double dist(ref Point p1, ref Point p2)
+        private static double dist(Point p1, Point p2)
         {
             int x = p1.X - p2.X;
             int y = p1.Y - p2.Y;
