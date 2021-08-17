@@ -3,9 +3,6 @@
 // // Project name: ClosestTriplet
 // // Purpose: This program takes N points as input and returns the closest distance between 3 points of the N points...
 // //----------------------------------------------------------------------------------------------------------------------
-// // Programmer name: David Nelson (nelsondk@etsu.edu)
-// // Course Name: CSCI 3230 Algorithms
-// // Course Section: 901
 // // Creation Date: 10/15/2020
 // //----------------------------------------------------------------------------------------------------------------------
 
@@ -20,9 +17,6 @@ namespace ClosestTriplet
     ///     The ClosestTriplet class finds the shortest distance between 3 points from
     ///     an input of N points.
     /// </summary>
-    /// <author>
-    ///     David Nelson
-    /// </author>
     /// <remarks>
     ///     Date Created: 10/15/2020
     /// </remarks>
